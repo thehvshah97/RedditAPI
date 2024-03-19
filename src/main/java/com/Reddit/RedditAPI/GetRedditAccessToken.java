@@ -23,23 +23,14 @@ import org.apache.http.HttpResponse;
 
 
 class GetRedditAccessToken {
-
+	private static RedditConfig redditConfig = RedditConfig.getInstance();
 	static String getRedditAccessToken() {
-		Properties prop = new Properties();
-        String username, password, clientid, clientsecret, accessTokenurl;
+		String username = redditConfig .getUsername();
+		String password = redditConfig.getPassword();
+		String clientid = redditConfig.getClientId();
+		String clientsecret = redditConfig.getClientSecret();
+		String accessTokenurl = redditConfig.getAccessTokenurl();
 
-        try (InputStream input = GetRedditAccessToken.class.getClassLoader().getResourceAsStream("application.properties")) {
-            prop.load(input);
-            username = prop.getProperty("username");
-            password = prop.getProperty("password");
-            clientid = prop.getProperty("clientid");
-            clientsecret = prop.getProperty("clientsecret");
-            accessTokenurl = prop.getProperty("accessTokenurl");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return "Error loading configuration file";
-        }
-		
 		CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
 		credentialsProvider.setCredentials(
 			    AuthScope.ANY,

@@ -16,29 +16,23 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class RedditLinksAndComments {
 	
-	@Autowired
-    private RedditConfig redditConfig;
-	
-	public RedditLinksAndComments(RedditConfig redditConfig) {
-        this.redditConfig = redditConfig;
-    }
+    private static RedditConfig redditConfig = RedditConfig.getInstance();
 	
 	@PostMapping("/submitLink")
 	public static String submitLinktoReddit(@RequestParam String[] values) {
 	    String accessToken = GetRedditAccessToken.getRedditAccessToken();
-		String accessTokenType = "";
-		String username = "";
-		String subRedditName = "";
-		String subRedditDisplayName = "";
-		String subRedditPostTitle = "";
-		String subredditUrl = "";
-		String apiCallEndpoint = "https://oauth.reddit.com/submit";
+		String accessTokenType = redditConfig.getAccessTokenType();
+		String username = redditConfig.getUsername();
+		String subRedditName = values[0];
+		String subRedditDisplayName = values[1];
+		String subRedditPostTitle = values[2];
+		String subredditUrl = values[3];
+		String apiCallEndpoint = redditConfig.getUrl() + "submit";
 		
 		HttpClient httpClient = HttpClientBuilder.create().build();
 		HttpPost httpPost = new HttpPost(apiCallEndpoint);

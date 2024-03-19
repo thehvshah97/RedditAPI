@@ -1,5 +1,10 @@
 package com.Reddit.RedditAPI;
 
-public class RedditAccount {
+import org.springframework.web.bind.annotation.GetMapping;
 
+public class RedditAccount {
+	@GetMapping("/")
+	String getAccountDetails(){
+		return "";
+	}
 }

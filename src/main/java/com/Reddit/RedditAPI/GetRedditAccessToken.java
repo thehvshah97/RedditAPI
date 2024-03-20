@@ -1,8 +1,6 @@
 package com.Reddit.RedditAPI;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 import java.util.ArrayList;
 import java.util.List;
 

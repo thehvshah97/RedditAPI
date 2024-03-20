@@ -23,7 +23,7 @@ public class RedditLinksAndComments {
 	
     private static RedditConfig redditConfig = RedditConfig.getInstance();
 	
-	@PostMapping("/submitLink")
+	@PostMapping("/api/submitLink")
 	public static String submitLinktoReddit(@RequestParam String[] values) {
 	    String accessToken = GetRedditAccessToken.getRedditAccessToken();
 		String accessTokenType = redditConfig.getAccessTokenType();

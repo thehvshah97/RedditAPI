@@ -10,6 +10,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 public class RedditAccount {
 	
@@ -19,7 +20,7 @@ public class RedditAccount {
 	String getAccountDetails(){
 		String accessToken = GetRedditAccessToken.getRedditAccessToken();
 		String accessTokenType = redditConfig.getAccessTokenType();
-		String apiCallEndpoint = redditConfig.getUrl() + "/api/me";
+		String apiCallEndpoint = redditConfig.getUrl() + "/api/v1/me";
 		
 		HttpClient httpClient = HttpClientBuilder.create().build();
 		HttpGet httpGet = new HttpGet(apiCallEndpoint);
@@ -45,5 +46,74 @@ public class RedditAccount {
 			e.printStackTrace();
 			return "";
 		}
+	}
+	
+	@GetMapping("/mySubreddits")
+	String getKarmaDetails() {
+		String accessToken = GetRedditAccessToken.getRedditAccessToken();
+		String accessTokenType = redditConfig.getAccessTokenType();
+		String apiCallEndpoint = redditConfig.getUrl() + "/api/v1/me/karma";
+		
+		HttpClient httpClient = HttpClientBuilder.create().build();
+		HttpGet httpGet = new HttpGet(apiCallEndpoint);
+		
+		try {
+			httpGet.setHeader("Authorization", accessTokenType + " " + accessToken);
+			HttpResponse response;
+			try {
+				response = httpClient.execute(httpGet);
+				String responseString = null;
+				try {
+					responseString = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
+					return responseString;
+				} catch(IOException e) {
+					return "Error in HTTP Response";
+				}
+			} catch(ClientProtocolException e) {
+				return "Error in HTTP Client";
+			} catch(IOException e) {
+				return "Error in HTTP Response";
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+	
+	@GetMapping("/prefrences")
+	String getPrefrences() {
+		String accessToken = GetRedditAccessToken.getRedditAccessToken();
+		String accessTokenType = redditConfig.getAccessTokenType();
+		String apiCallEndpoint = redditConfig.getUrl() + "/api/v1/me/prefs";
+		
+		HttpClient httpClient = HttpClientBuilder.create().build();
+		HttpGet httpGet = new HttpGet(apiCallEndpoint);
+		
+		try {
+			httpGet.setHeader("Authorization", accessTokenType + " " + accessToken);
+			HttpResponse response;
+			try {
+				response = httpClient.execute(httpGet);
+				String responseString = null;
+				try {
+					responseString = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
+					return responseString;
+				} catch(IOException e) {
+					return "Error in HTTP Response";
+				}
+			} catch(ClientProtocolException e) {
+				return "Error in HTTP Client";
+			} catch(IOException e) {
+				return "Error in HTTP Response";
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+	
+	@PatchMapping("/editprefrences")
+	String editPrefences() {
+		return "";
 	}
 }

@@ -18,6 +18,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.HttpResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 class GetRedditAccessToken {
@@ -53,7 +54,10 @@ class GetRedditAccessToken {
 				String responseString = null;
 				try {
 					responseString = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
-					return responseString;
+					ObjectMapper objectMapper = new ObjectMapper();
+					JsonResponse jsonResponse = objectMapper.readValue(responseString, JsonResponse.class);
+					String accessToken = jsonResponse.getAccess_token();
+					return accessToken;
 				} catch(IOException e) {
 					return "Error in HTTP Response";
 				}
@@ -67,4 +71,17 @@ class GetRedditAccessToken {
 			return "";
 		}
 	}
+}
+
+
+class JsonResponse{
+	private String access_token;
+
+    public String getAccess_token() {
+        return access_token;
+    }
+
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
+    }
 }

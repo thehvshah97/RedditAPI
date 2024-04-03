@@ -16,7 +16,7 @@ public class RedditAccount {
 	
 	private static RedditConfig redditConfig = RedditConfig.getInstance();
 	
-	@GetMapping("/me")
+	@GetMapping("/account/me")
 	String getAccountDetails(){
 		String accessToken = GetRedditAccessToken.getRedditAccessToken();
 		String accessTokenType = redditConfig.getAccessTokenType();
@@ -48,7 +48,7 @@ public class RedditAccount {
 		}
 	}
 	
-	@GetMapping("/mySubreddits")
+	@GetMapping("/account/mySubreddits")
 	String getKarmaDetails() {
 		String accessToken = GetRedditAccessToken.getRedditAccessToken();
 		String accessTokenType = redditConfig.getAccessTokenType();
@@ -80,7 +80,39 @@ public class RedditAccount {
 		}
 	}
 	
-	@GetMapping("/prefrences")
+	@GetMapping("/account/trophies")
+	String getTrophies() {
+		String accessToken = GetRedditAccessToken.getRedditAccessToken();
+		String accessTokenType = redditConfig.getAccessTokenType();
+		String apiCallEndpoint = redditConfig.getUrl() + "/api/v1/me/trophies";
+		
+		HttpClient httpClient = HttpClientBuilder.create().build();
+		HttpGet httpGet = new HttpGet(apiCallEndpoint);
+		
+		try {
+			httpGet.setHeader("Authorization", accessTokenType + " " + accessToken);
+			HttpResponse response;
+			try {
+				response = httpClient.execute(httpGet);
+				String responseString = null;
+				try {
+					responseString = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
+					return responseString;
+				} catch(IOException e) {
+					return "Error in HTTP Response";
+				}
+			} catch(ClientProtocolException e) {
+				return "Error in HTTP Client";
+			} catch(IOException e) {
+				return "Error in HTTP Response";
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+	
+	@GetMapping("/account/trophies")
 	String getPrefrences() {
 		String accessToken = GetRedditAccessToken.getRedditAccessToken();
 		String accessTokenType = redditConfig.getAccessTokenType();
